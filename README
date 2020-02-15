@@ -1,0 +1,28 @@
+1) setup CMS environment (e.g. CMSSW_10_3_3_patch1)
+   a) source /cvmfs/cms.cern.ch/cmsset_default.sh
+   b) export SCRAM_ARCH=slc7_amd64_gcc700
+   c) cmsrel CMSSW_10_3_3_patch1
+   d) cd CMSSW_10_3_3_patch1/src
+   e) cmsenv 
+   f) git cms-addpkg GeneratorInterface/LHEInterface/
+   g) git cms-addpkg Configuration/GenProduction (if not exist, then 'mkdir -p Configuration/GenProduction/python')
+   g) cd -
+
+2) make STARlight tarball needed for simulation (those scripts are from offical genproductions 'git clone https://github.com/cms-sw/genproductions.git' but modified little bit to fix some bugs)
+   a) cd makeTarball
+   b) ./create_lhe_starlight.sh (set rebuildFromSource=true, runLocally=false)
+   c) cd -
+
+3) copy scripts (bash and python) and generated tarball to suitable directories, then compile
+   a) cp makeTarball/runcmsgrid_starlight.sh CMSSW_10_3_3_patch1/src/GeneratorInterface/LHEInterface/data/
+   b) cp makeTarball/producedTarball(e.g. slightGridpack_ProdType1_BreakupMode5_Channel13_beam208) CMSSW_10_3_3_patch1/src/GeneratorInterface/LHEInterface/data/
+   c) cp pythonFiles/HINPbPbAutumn18wmLHEGS_STARlight_GammaGamma_fragment.py CMSSW_10_3_3_patch1/src/Configuration/GenProduction/python/
+   d) cd CMSSW_10_3_3_patch1/src
+   e) scram b -j 8
+
+4) use cmsDiver to generate GENSIM, Digi, and Reco python files
+   a) using the commands listed in genPythonFile_cmsDriver to generated needed step1, step2 and step3 cfg.py files
+   b) make submitJob
+   c) cp GENSIM, Digi, and Reco python files to submitJob
+   d) cmsRun *_cfg.py to generate simulation files
+   e) using the python examples (crabJob*.py) to submit job to crab

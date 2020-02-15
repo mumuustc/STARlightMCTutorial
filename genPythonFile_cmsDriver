@@ -1,0 +1,11 @@
+For gensim (official):
+cmsDriver.py Configuration/GenProduction/python/HINPbPbAutumn18wmLHEGS_STARlight_GammaGamma_fragment.py --fileout file:step1_GammaGamma_GenSim.root --mc --eventcontent RAWSIM,LHE --no_exec --datatier GEN-SIM,LHE --conditions 103X_upgrade2018_realistic_HI_v13 --beamspot RealisticPbPbCollision2018 --step LHE,GEN,SIM --nThreads 2 --scenario HeavyIons --geometry DB:Extended --era Run2_2018_pp_on_AA --python_filename step1_STARlight_GammaGamma_GenSim_cfg.py --no_exec --customise Configuration/DataProcessing/Utils.addMonitoring --customise_commands process.RandomNumberGeneratorService.externalLHEProducer.initialSeed="int($RANDOM)" -n 100
+
+For gensim (from Andre):
+cmsDriver.py Configuration/GenProduction/python/HINPbPbAutumn18wmLHEGS_STARlight_GammaGamma_fragment.py --python_filename step1_STARlight_GammaGamma_GenSim_cfg.py --mc --eventcontent RAWSIM --datatier LHE-GEN-SIM  --conditions 103X_upgrade2018_realistic_HI_v13 --beamspot RealisticPbPbCollision2018 --step LHE,GEN,SIM --nThreads 2 --scenario HeavyIons --geometry DB:Extended --era Run2_2018_pp_on_AA --number=100 --fileout=file:step1_GammaGamma_GenSim.root --no_exec --customise Configuration/DataProcessing/Utils.addMonitoring
+
+For simulation:
+cmsDriver.py step2 --python_filename step2_STARlight_GammaGamma_Digi_cfg.py --filein=file:step1_GammaGamma_GenSim.root --fileout=file:step2_GammaGamma_Digi.root --mc --eventcontent RAWSIM --pileup HiMixNoPU --datatier GEN-SIM-RAW --conditions 103X_upgrade2018_realistic_HI_v13 --step DIGI:pdigi_hi_nogen,L1,DIGI2RAW,HLT:HIon --nThreads 2 --geometry DB:Extended --era Run2_2018_pp_on_AA --no_exec --customise Configuration/DataProcessing/Utils.addMonitoring --number=100
+
+for reco:
+cmsDriver.py step3 --python_filename step3_STARlight_GammaGamma_Reco_cfg.py --filein=file:step2_GammaGamma_Digi.root  --fileout=file:step3_GammaGamma_Reco.root --mc --eventcontent AODSIM --runUnscheduled --datatier AODSIM --conditions 103X_upgrade2018_realistic_HI_v13 --step RAW2DIGI,L1Reco,RECO --nThreads 2 --era Run2_2018_pp_on_AA --no_exec --customise Configuration/DataProcessing/Utils.addMonitoring --number=100
