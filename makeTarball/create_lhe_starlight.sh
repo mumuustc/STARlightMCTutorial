@@ -65,10 +65,10 @@ if [ $PtCut == 0 ]; then echo "Pt Cuts OFF"
 else echo "Pt Cuts ON from $PtMin to $PtMax"
 fi
 
-if [ ${CMSSW_BASE} == "" ]; then
-    echo "CMSSW_BASE not found! Please run cmsenv first!"
-    exit 1
-fi
+#if [ ${CMSSW_BASE} == "" ]; then
+#    echo "CMSSW_BASE not found! Please run cmsenv first!"
+#    exit 1
+#fi
 
 if [ $rebuildFromSource == true ]; then
     echo "rebuilding starlight from source..."
